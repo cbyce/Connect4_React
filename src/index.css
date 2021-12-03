@@ -12,22 +12,41 @@ code {
     monospace;
 }
 
+/*----- Board Holes -----*/
 .boardHole {
-  background-color: white;
   height: 50px;
   width: 50px;
   border-radius: 25px;
   margin: 5px;
+  border-color: rgba(0,0,0,0.75);
+}
+
+.boardHole.whiteSpot {
+  background-color: antiquewhite;
 }
 
 .boardHole.redSpot {
-  background-color: red;
+  background-color: rgb(225,70,95);
 }
 
 .boardHole.yellowSpot {
-  background-color: yellow;
+  background-color: rgb(230,210,60);
 }
 
 .boardHole.orangeSpot {
-  background-color: yellow;
+  background-color: rgb(205,135,0);
+}
+
+/* ----- Other Page Elements ----- */
+#resetBtn {
+  color: white;
+  background-color: rgb(20,105,225);
+  border: 2px solid black;
+  border-radius: 50%;
+  font-weight:  bold;
+  font-size: 115%;
+  height: 85px;
+  width: 85px;
+  cursor: pointer;
+
 }

@@ -44,7 +44,7 @@ function ResetBtn(){
                         window.location.reload(false);
                       }
                     }>
-      Click To Restart
+              New Game
     </button>
   );
 }
@@ -92,10 +92,10 @@ class GameBoard extends React.Component
     super(props);
 
     this.state = {
-      gameBoard: new Array(7).fill(new Array(6).fill('white')), // Multi dimensional array for the board
+      gameBoard: new Array(7).fill(new Array(6).fill('whiteSpot')), // Multi dimensional array for the board
       winner: '', // Winner of the match
       count: 0, // Number of turns played 
-      playersTurn: 'yedSpot' // The player who is about to place a checker (Game starts with red player) 
+      playersTurn: 'redSpot' // The player who is about to place a checker (Game starts with red player) 
     }
   }
 
@@ -111,7 +111,7 @@ class GameBoard extends React.Component
       <Hole id={holeId}
             className={'boardHole '   + this.state.gameBoard[posX][posY]} 
             owner={this.state.gameBoard[posX][posY]} 
-            disabled={(this.state.gameBoard[posX][posY] !== 'white' || this.state.winner !== '')}
+            disabled={(this.state.gameBoard[posX][posY] !== 'whiteSpot' || this.state.winner !== '')}
             onClick={() => 
               {
                 // Copy of the current board
@@ -123,7 +123,7 @@ class GameBoard extends React.Component
                 let newVal = newBoard[posX];
 
                 // Updates the white spot to the current players color
-                newVal[newVal.indexOf('white')] = this.state.playersTurn;
+                newVal[newVal.indexOf('whiteSpot')] = this.state.playersTurn;
                 console.log(newVal);
 
                 this.setState({
@@ -159,7 +159,7 @@ class GameBoard extends React.Component
     return (
       <div style={boardStyle}>
         <TurnMessage win={this.state.winner} count={this.state.count} owner={this.state.playersTurn} />
-        <div style={{backgroundColor: 'blue', borderRadius: '25px', width: '420px', padding: '15px'}}>
+        <div style={{backgroundColor: 'rgb(20,105,225)', borderRadius: '25px', width: '420px', padding: '15px'}}>
           {this.renderRow(5)}
           {this.renderRow(4)}
           {this.renderRow(3)}
@@ -176,7 +176,7 @@ class GameBoard extends React.Component
 function checkFour(a, b, c, d)
 {
   return (
-          (a !== 'white' && b !== 'white' && c !== 'white' && d !== 'white') 
+          (a !== 'whiteSpot' && b !== 'whiteSpot' && c !== 'whiteSpot' && d !== 'whiteSpot') 
           && 
           (a === b && b === c && c === d)
     );
