@@ -101,7 +101,7 @@ class GameBoard extends React.Component
     super(props);
 
     this.state = {
-      gameBoard: new Array(6).fill(new Array(7).fill('white')), // Multi dimensional array for the board
+      gameBoard: new Array(7).fill(new Array(6).fill('white')), // Multi dimensional array for the board
       winner: '', // Winner of the match
       count: 0, // Number of turns played 
       playersTurn: 'red' // The player who is about to place a checker (Game starts with red player) 
@@ -118,8 +118,8 @@ class GameBoard extends React.Component
       // Owner is determined by color in the board multi dimensional array
       // Disables the button if owned by a color or winner already determined
       <Hole id={holeId} 
-            owner={this.state.gameBoard[posY][posX]} 
-            disabled={(this.state.gameBoard[posY][posX] !== 'white' || this.state.winner !== '')}
+            owner={this.state.gameBoard[posX][posY]} 
+            disabled={(this.state.gameBoard[posX][posY] !== 'white' || this.state.winner !== '')}
             onClick={() => 
               {
                 // Copy of the current board
@@ -128,11 +128,10 @@ class GameBoard extends React.Component
                 });
 
                 // Copy of the row the player clicked
-                let newVal = newBoard[posY];
+                let newVal = newBoard[posX];
 
                 // Updates the white spot to the current players color
-                newVal[posX] = this.state.playersTurn;
-              
+                newVal[posY] = this.state.playersTurn;
 
                 this.setState({
                   playersTurn: (this.state.playersTurn === 'red') ? 'yellow' : 'red', // Sets the turn to the other player
@@ -194,55 +193,55 @@ function checkFour(a, b, c, d)
 function checkWinner(b)
 {
   // For each row -
-  for (let j = 0; j < 6; j++)
+  for (let y = 0; y < 6; y++)
   {
     // For each possible position in column 
-    for(let i = 0; i < 4; i++) 
+    for(let x = 0; x < 4; x++) 
     {
-      if (checkFour(b[j][i], b[j][1 + i], b[j][2 + i], b[j][3 + i]))
+      if (checkFour(b[x][y], b[x + 1][y], b[x + 2][y], b[x + 3][y]))
       {
-        return b[j][i];
+        return b[x][y];
       }
     }
   }
 
   // For each column |
-  for (let j = 0; j < 7; j++)
+  for (let x = 0; x < 7; x++)
   {
     // For each possible possition in a row
-    for(let i = 0; i < 3; i++) 
+    for(let y = 0; y < 3; y++) 
     {
-      if (checkFour(b[i][j], b[1 + i][j], b[2 + i][j], b[3 + i][j]))
+      if (checkFour(b[x][y], b[x][y + 1], b[x][y + 2], b[x][y + 3]))
       {
-        return b[i][j];
+        return b[x][y];
       }
     }
   }
 
   // For each diagonal \ (negative slope)
   // For each possible possition in a column
-  for (let j = 0; j < 4; j++)
+  for (let x = 0; x < 4; x++)
   {
     // For each possible possition in a row
-    for(let i = 0; i < 3; i++) 
+    for(let y = 0; y < 3; y++) 
     {
-      if (checkFour(b[i][j], b[1 + i][1 + j], b[2 + i][2 + j], b[3 + i][3 + j]))
+      if (checkFour(b[x][y], b[x + 1][y + 1], b[x + 2][y + 2], b[x + 3][y + 3]))
       {
-        return b[i][j];
+        return b[x][y];
       }
     }
   }
 
   // For each diagonal / (positive slope)
   // For each possible possition in a column
-  for (let j = 0; j < 4; j++)
+  for (let x = 0; x < 4; x++)
   {
     // For each possible possition in a row
-    for(let i = 0; i < 3; i++) 
+    for(let y = 0; y < 3; y++) 
     {
-      if (checkFour(b[i][3 + j], b[1 + i][2 + j], b[2 + i][1 + j], b[3 + i][j]))
+      if (checkFour(b[x][y + 3], b[x + 1][y + 2], b[x + 2][y + 1], b[x + 3][y]))
       {
-        return b[i][j];
+        return b[x][y];
       }
     }
   }
