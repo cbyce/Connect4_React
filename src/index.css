@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.boardHole {
+  background-color: white;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  margin: 5px;
+}
+
+.boardHole.redSpot {
+  background-color: red;
+}
+
+.boardHole.yellowSpot {
+  background-color: yellow;
+}
+
+.boardHole.orangeSpot {
+  background-color: yellow;
+}

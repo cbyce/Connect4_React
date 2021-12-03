@@ -56,11 +56,11 @@ function TurnMessage(props) {
   if (props.win !== '') {
     // If there is a winner
     message = "Player Wins!";
-    player = (props.owner === 'red') ? 'yellow' : 'red'; //Opposite of whos turn it is because last turn won
+    player = (props.owner === 'redSpot') ? 'yellowSpot' : 'redSpot'; //Opposite of whos turn it is because last turn won
   } else if (props.count === 42) {
     // Board filled without a winner
     message = "Tie Game";
-    player = 'orange';
+    player = 'orangeSpot';
   } else {
     // Displays the next players turn
     message = "Players Turn";
@@ -69,7 +69,7 @@ function TurnMessage(props) {
 
   return (
     <div style={messageStyle}>
-      <Hole owner={player} id={"displayDot"} /> 
+      <Hole owner={player} className={'boardHole ' + player} id={"displayDot"} /> 
       <div>
         {message}
       </div>
@@ -79,18 +79,9 @@ function TurnMessage(props) {
 
 // Hole button on the board
 function Hole(props)
-{
-  // Owner of spot determines color
-  let holesStyle = {
-    backgroundColor: props.owner,
-    height: '50px',
-    width: '50px',
-    borderRadius: '25px',
-    margin: '5px'
-  };
-  
+{ 
   return (
-    <button style={holesStyle} id={props.id} onClick={props.onClick} disabled={props.disabled}></button>
+    <button className={props.className} id={props.id} onClick={props.onClick} disabled={props.disabled}></button>
   );
 }
 
@@ -104,7 +95,7 @@ class GameBoard extends React.Component
       gameBoard: new Array(7).fill(new Array(6).fill('white')), // Multi dimensional array for the board
       winner: '', // Winner of the match
       count: 0, // Number of turns played 
-      playersTurn: 'red' // The player who is about to place a checker (Game starts with red player) 
+      playersTurn: 'yedSpot' // The player who is about to place a checker (Game starts with red player) 
     }
   }
 
@@ -117,7 +108,8 @@ class GameBoard extends React.Component
     return (
       // Owner is determined by color in the board multi dimensional array
       // Disables the button if owned by a color or winner already determined
-      <Hole id={holeId} 
+      <Hole id={holeId}
+            className={'boardHole '   + this.state.gameBoard[posX][posY]} 
             owner={this.state.gameBoard[posX][posY]} 
             disabled={(this.state.gameBoard[posX][posY] !== 'white' || this.state.winner !== '')}
             onClick={() => 
@@ -131,10 +123,11 @@ class GameBoard extends React.Component
                 let newVal = newBoard[posX];
 
                 // Updates the white spot to the current players color
-                newVal[posY] = this.state.playersTurn;
+                newVal[newVal.indexOf('white')] = this.state.playersTurn;
+                console.log(newVal);
 
                 this.setState({
-                  playersTurn: (this.state.playersTurn === 'red') ? 'yellow' : 'red', // Sets the turn to the other player
+                  playersTurn: (this.state.playersTurn === 'redSpot') ? 'yellowSpot' : 'redSpot', // Sets the turn to the other player
                   gameBoard: newBoard, // Updates the game board with the players move
                   count: (this.state.count + 1), // Increases turn count
                   winner: checkWinner(newBoard) // Checks to see if there is a winner (If no winner, sets to '')
@@ -167,12 +160,12 @@ class GameBoard extends React.Component
       <div style={boardStyle}>
         <TurnMessage win={this.state.winner} count={this.state.count} owner={this.state.playersTurn} />
         <div style={{backgroundColor: 'blue', borderRadius: '25px', width: '420px', padding: '15px'}}>
-          {this.renderRow(0)}
-          {this.renderRow(1)}
-          {this.renderRow(2)}
-          {this.renderRow(3)}
-          {this.renderRow(4)}
           {this.renderRow(5)}
+          {this.renderRow(4)}
+          {this.renderRow(3)}
+          {this.renderRow(2)}
+          {this.renderRow(1)}
+          {this.renderRow(0)}
         </div>
       </div>
     );
