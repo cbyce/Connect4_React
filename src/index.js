@@ -219,7 +219,8 @@ function checkWinner(b)
     }
   }
 
-  // For each diagonal \
+  // For each diagonal \ (negative slope)
+  // For each possible possition in a column
   for (let j = 0; j < 4; j++)
   {
     // For each possible possition in a row
@@ -232,7 +233,8 @@ function checkWinner(b)
     }
   }
 
-  // For each diagonal /
+  // For each diagonal / (positive slope)
+  // For each possible possition in a column
   for (let j = 0; j < 4; j++)
   {
     // For each possible possition in a row
