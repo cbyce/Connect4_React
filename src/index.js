@@ -2,40 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-/*----- Styling for the game -----*/
-// Board and Display styling
-const boardStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center', 
-  justifyContent: 'space-between', 
-  height: '485px'
-}
-
-// Whole pages styling
-const pageStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center', 
-  justifyContent: 'space-evenly', 
-  minWidth: '475px',
-  minHeight: '515px',
-  height: '100vh',
-  backgroundColor: 'antiquewhite'
-}
-
-// Message display styling 
-const messageStyle = {
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center',
-  padding: '5px 10px', 
-  width: '175px', 
-  backgroundColor: 'white', 
-  border: '2px solid black', 
-  borderRadius: '35px' 
-};
-
 // Button to refresh page and thus restart game
 function ResetBtn(){
   return (
@@ -56,7 +22,9 @@ function TurnMessage(props) {
   if (props.win !== '') {
     // If there is a winner
     message = "Player Wins!";
-    player = (props.owner === 'redSpot') ? 'yellowSpot' : 'redSpot'; //Opposite of whos turn it is because last turn won
+
+    // Opposite of whos turn it is as the last turn won
+    player = (props.owner === 'redSpot') ? 'yellowSpot' : 'redSpot'; 
   } else if (props.count === 42) {
     // Board filled without a winner
     message = "Tie Game";
@@ -68,7 +36,7 @@ function TurnMessage(props) {
   }
 
   return (
-    <div style={messageStyle}>
+    <div className={"messageDisplay"}>
       <Hole owner={player} className={'boardHole ' + player} id={"displayDot"} /> 
       <div>
         {message}
@@ -122,9 +90,8 @@ class GameBoard extends React.Component
                 // Copy of the row the player clicked
                 let newVal = newBoard[posX];
 
-                // Updates the white spot to the current players color
+                // Updates the white spot to the current players color (gets the index of the first white spot in the array)
                 newVal[newVal.indexOf('whiteSpot')] = this.state.playersTurn;
-                console.log(newVal);
 
                 this.setState({
                   playersTurn: (this.state.playersTurn === 'redSpot') ? 'yellowSpot' : 'redSpot', // Sets the turn to the other player
@@ -157,9 +124,9 @@ class GameBoard extends React.Component
   {
     // Renders rows of gameboard and renders the turn message
     return (
-      <div style={boardStyle}>
+      <div className={"playArea"}>
         <TurnMessage win={this.state.winner} count={this.state.count} owner={this.state.playersTurn} />
-        <div style={{backgroundColor: 'rgb(20,105,225)', borderRadius: '25px', width: '420px', padding: '15px'}}>
+        <div className={"gameBoard"}>
           {this.renderRow(5)}
           {this.renderRow(4)}
           {this.renderRow(3)}
@@ -193,6 +160,7 @@ function checkWinner(b)
     {
       if (checkFour(b[x][y], b[x + 1][y], b[x + 2][y], b[x + 3][y]))
       {
+        shineWinners(['X' + x + 'Y' + y, 'X' + (x + 1) + 'Y' + y, 'X' + (x + 2) + 'Y' + y, 'X' + (x + 3) + 'Y' + y]);
         return b[x][y];
       }
     }
@@ -201,39 +169,42 @@ function checkWinner(b)
   // For each column |
   for (let x = 0; x < 7; x++)
   {
-    // For each possible possition in a row
+    // For each possible position in a row
     for(let y = 0; y < 3; y++) 
     {
       if (checkFour(b[x][y], b[x][y + 1], b[x][y + 2], b[x][y + 3]))
       {
+        shineWinners(['X' + x + 'Y' + y, 'X' + x + 'Y' + (y + 1), 'X' + x + 'Y' + (y + 2), 'X' + x + 'Y' + (y + 3)]);
         return b[x][y];
       }
     }
   }
 
   // For each diagonal \ (negative slope)
-  // For each possible possition in a column
+  // For each possible position in a column
   for (let x = 0; x < 4; x++)
   {
-    // For each possible possition in a row
+    // For each possible position in a row
     for(let y = 0; y < 3; y++) 
     {
       if (checkFour(b[x][y], b[x + 1][y + 1], b[x + 2][y + 2], b[x + 3][y + 3]))
       {
+        shineWinners(['X' + x + 'Y' + y, 'X' + (x + 1) + 'Y' + (y + 1), 'X' + (x + 2) + 'Y' + (y + 2), 'X' + (x + 3) + 'Y' + (y + 3)]);
         return b[x][y];
       }
     }
   }
 
   // For each diagonal / (positive slope)
-  // For each possible possition in a column
+  // For each possible position in a column
   for (let x = 0; x < 4; x++)
   {
-    // For each possible possition in a row
+    // For each possible position in a row
     for(let y = 0; y < 3; y++) 
     {
       if (checkFour(b[x][y + 3], b[x + 1][y + 2], b[x + 2][y + 1], b[x + 3][y]))
       {
+        shineWinners(['X' + x + 'Y' + (y + 3), 'X' + (x + 1) + 'Y' + (y + 2), 'X' + (x + 2) + 'Y' + (y + 1), 'X' + (x + 3) + 'Y' + y]);
         return b[x][y];
       }
     }
@@ -243,8 +214,27 @@ function checkWinner(b)
   return '';
 }
 
+// Function
+function shineWinners(ids)
+{
+  // Determines if a red or yellow spot and wich color to change too
+  let newColor;
+  if (document.getElementById(ids[0]).classList.contains('redSpot')) {
+    newColor = 'red';
+  } else {
+    newColor = 'yellow';
+  }
+
+  // For each of the ids the border is set to white and the background color updated
+  for(let i = 0; i < ids.length; i ++)
+  {
+    document.getElementById(ids[i]).style.backgroundColor = newColor;
+    document.getElementById(ids[i]).style.borderColor = 'white';
+  }
+}
+
 ReactDOM.render(
-  <div style={pageStyle}>
+  <div className={"mainPage"}>
     <GameBoard />
     <ResetBtn />
   </div>

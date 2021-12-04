@@ -12,6 +12,44 @@ code {
     monospace;
 }
 
+/* ----- Board & Page ----- */
+.gameBoard {
+  background-color: rgb(20,105,225);
+  border-radius: 25px; 
+  width: 420px;
+  padding: 15px;
+}
+
+.playArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: space-between;
+  height: 485px;
+}
+
+.mainPage { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-width: 475px;
+  min-height: 515px;
+  height: 100vh;
+  background-color: antiquewhite;
+}
+
+.messageDisplay {
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px; 
+  width: 175px; 
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 35px;
+}
+
 /*----- Board Holes -----*/
 .boardHole {
   height: 50px;
@@ -19,18 +57,20 @@ code {
   border-radius: 25px;
   margin: 5px;
   border-color: rgba(0,0,0,0.75);
+  transition: 0.25s;
 }
 
 .boardHole.whiteSpot {
   background-color: antiquewhite;
+  cursor: pointer;
 }
 
 .boardHole.redSpot {
-  background-color: rgb(225,70,95);
+  background-color: rgba(225,70,95, 0.99);
 }
 
 .boardHole.yellowSpot {
-  background-color: rgb(230,210,60);
+  background-color: rgba(230,210,60, 0.99);
 }
 
 .boardHole.orangeSpot {
@@ -48,5 +88,4 @@ code {
   height: 85px;
   width: 85px;
   cursor: pointer;
-
 }
